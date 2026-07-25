@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gym_track/app/router/route_names.dart';
-import 'package:gym_track/core/utils/responsive.dart';
 
-/// Adaptive shell: bottom nav on mobile, navigation rail on tablet/desktop.
+import 'package:gym_track/app/theme/app_spacing.dart';
+import 'package:gym_track/core/utils/responsive.dart';
+import 'package:gym_track/core/widgets/animated_bottom_nav.dart';
+
+/// Adaptive shell: animated bottom nav on mobile, rail on tablet/desktop.
+///
+/// Branch state is preserved by [StatefulShellRoute] + [AnimatedBranchContainer].
 class AppShell extends StatelessWidget {
   const AppShell({
     required this.navigationShell,
@@ -12,62 +16,51 @@ class AppShell extends StatelessWidget {
 
   final StatefulNavigationShell navigationShell;
 
+  static const destinations = [
+    NavDestination(
+      label: 'Dashboard',
+      icon: Icons.dashboard_outlined,
+      selectedIcon: Icons.dashboard_rounded,
+    ),
+    NavDestination(
+      label: 'Calendar',
+      icon: Icons.calendar_month_outlined,
+      selectedIcon: Icons.calendar_month_rounded,
+    ),
+    NavDestination(
+      label: 'Workout',
+      icon: Icons.fitness_center_outlined,
+      selectedIcon: Icons.fitness_center_rounded,
+    ),
+    NavDestination(
+      label: 'Progress',
+      icon: Icons.insights_outlined,
+      selectedIcon: Icons.insights_rounded,
+    ),
+    NavDestination(
+      label: 'Settings',
+      icon: Icons.settings_outlined,
+      selectedIcon: Icons.settings_rounded,
+    ),
+  ];
+
   void _onDestinationSelected(int index) {
     navigationShell.goBranch(
       index,
+      // Tapping the active tab pops nested routes back to the branch root.
       initialLocation: index == navigationShell.currentIndex,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    const destinations = [
-      _ShellDestination(
-        label: 'Home',
-        icon: Icons.home_outlined,
-        selectedIcon: Icons.home_rounded,
-        path: AppRoutes.home,
-      ),
-      _ShellDestination(
-        label: 'Workouts',
-        icon: Icons.fitness_center_outlined,
-        selectedIcon: Icons.fitness_center_rounded,
-        path: AppRoutes.workouts,
-      ),
-      _ShellDestination(
-        label: 'Exercises',
-        icon: Icons.sports_gymnastics_outlined,
-        selectedIcon: Icons.sports_gymnastics_rounded,
-        path: AppRoutes.exercises,
-      ),
-      _ShellDestination(
-        label: 'Progress',
-        icon: Icons.insights_outlined,
-        selectedIcon: Icons.insights_rounded,
-        path: AppRoutes.progress,
-      ),
-      _ShellDestination(
-        label: 'Settings',
-        icon: Icons.settings_outlined,
-        selectedIcon: Icons.settings_rounded,
-        path: AppRoutes.settings,
-      ),
-    ];
-
     if (Responsive.isMobile(context)) {
       return Scaffold(
         body: navigationShell,
-        bottomNavigationBar: NavigationBar(
+        bottomNavigationBar: AnimatedBottomNav(
+          destinations: destinations,
           selectedIndex: navigationShell.currentIndex,
           onDestinationSelected: _onDestinationSelected,
-          destinations: [
-            for (final d in destinations)
-              NavigationDestination(
-                icon: Icon(d.icon),
-                selectedIcon: Icon(d.selectedIcon),
-                label: d.label,
-              ),
-          ],
         ),
       );
     }
@@ -83,7 +76,7 @@ class AppShell extends StatelessWidget {
                 ? NavigationRailLabelType.none
                 : NavigationRailLabelType.all,
             leading: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
               child: Icon(
                 Icons.fitness_center_rounded,
                 color: Theme.of(context).colorScheme.primary,
@@ -105,18 +98,4 @@ class AppShell extends StatelessWidget {
       ),
     );
   }
-}
-
-class _ShellDestination {
-  const _ShellDestination({
-    required this.label,
-    required this.icon,
-    required this.selectedIcon,
-    required this.path,
-  });
-
-  final String label;
-  final IconData icon;
-  final IconData selectedIcon;
-  final String path;
 }

@@ -26,7 +26,11 @@ flutter analyze
 flutter test
 ```
 
-## Project structure
+## Shell navigation
+
+Animated bottom bar tabs (state preserved via `StatefulShellRoute`):
+
+**Dashboard · Calendar · Workout · Progress · Settings**
 
 ```
 lib/
@@ -41,10 +45,11 @@ lib/
     error/                  # Failure / exception scaffolding
     storage/                # Hive CE initialization
     utils/                  # Responsive helpers
-    widgets/                # Shell, layout, placeholders
+    widgets/                # Shell, animated nav, layout, placeholders
   features/
     splash/
-    home/                   # data / domain / presentation
+    home/                   # Dashboard
+    calendar/
     workouts/
     exercises/
     progress/

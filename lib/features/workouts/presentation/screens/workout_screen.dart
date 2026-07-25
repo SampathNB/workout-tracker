@@ -4,14 +4,14 @@ import 'package:go_router/go_router.dart';
 import 'package:gym_track/app/router/route_names.dart';
 import 'package:gym_track/core/widgets/placeholder_view.dart';
 
-/// Workouts list placeholder.
-class WorkoutsScreen extends StatelessWidget {
-  const WorkoutsScreen({super.key});
+/// Workout tab placeholder — sessions and templates.
+class WorkoutScreen extends StatelessWidget {
+  const WorkoutScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Workouts')),
+      appBar: AppBar(title: const Text('Workout')),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.push(AppRoutes.workoutDetailPath('new')),
         icon: const Icon(Icons.add_rounded),
