@@ -28,6 +28,7 @@ import 'package:hive_ce/hive_ce.dart';
 @GenerateAdapters([
   // Exercises
   AdapterSpec<Exercise>(),
+  AdapterSpec<ExerciseLibraryCategory>(),
   AdapterSpec<MuscleGroup>(),
   AdapterSpec<Equipment>(),
   AdapterSpec<ExerciseCategory>(),
@@ -59,3 +60,4 @@ import 'package:hive_ce/hive_ce.dart';
   AdapterSpec<BiologicalSex>(),
 ])
 part 'hive_adapters.g.dart';
+

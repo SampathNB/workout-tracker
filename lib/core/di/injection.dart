@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gym_track/core/storage/hive_storage.dart';
 import 'package:gym_track/features/exercises/data/datasources/exercise_local_data_source.dart';
+import 'package:gym_track/features/exercises/data/exercise_library_seeder.dart';
 import 'package:gym_track/features/exercises/data/repositories/exercise_repository_impl.dart';
 import 'package:gym_track/features/exercises/domain/entities/exercise.dart';
 import 'package:gym_track/features/exercises/domain/repositories/exercise_repository.dart';
@@ -43,10 +44,17 @@ final class AppDependencies {
   final SharedPreferences sharedPreferences;
 }
 
-/// Bootstraps infrastructure (Hive, SharedPreferences) for dependency injection.
+/// Bootstraps infrastructure (Hive, SharedPreferences, default library) for DI.
 abstract final class DependencyInjection {
   static Future<AppDependencies> init() async {
     await HiveStorage.init();
+
+    // Seed bundled exercises before the UI mounts so the library is ready.
+    final exerciseRepository = ExerciseRepositoryImpl(
+      ExerciseLocalDataSource(HiveStorage.exercisesBox),
+    );
+    await ExerciseLibrarySeeder.ensureSeeded(exerciseRepository);
+
     final sharedPreferences = await SharedPreferences.getInstance();
     return AppDependencies(sharedPreferences: sharedPreferences);
   }

@@ -21,6 +21,9 @@ class ExerciseAdapter extends TypeAdapter<Exercise> {
       name: fields[1] as String,
       primaryMuscle: fields[2] as MuscleGroup,
       createdAt: fields[14] as DateTime,
+      libraryCategory: fields[16] == null
+          ? ExerciseLibraryCategory.chest
+          : fields[16] as ExerciseLibraryCategory,
       secondaryMuscles: fields[3] == null
           ? const <MuscleGroup>[]
           : (fields[3] as List).cast<MuscleGroup>(),
@@ -36,6 +39,13 @@ class ExerciseAdapter extends TypeAdapter<Exercise> {
       instructions: fields[7] as String?,
       imagePath: fields[8] as String?,
       videoUrl: fields[9] as String?,
+      recommendedSets: fields[17] == null ? 3 : (fields[17] as num).toInt(),
+      recommendedRepsMin: fields[18] == null ? 8 : (fields[18] as num).toInt(),
+      recommendedRepsMax: fields[19] == null
+          ? 12
+          : (fields[19] as num?)?.toInt(),
+      recommendedDurationSeconds: (fields[20] as num?)?.toInt(),
+      recommendedDurationMaxSeconds: (fields[21] as num?)?.toInt(),
       defaultRestSeconds: fields[10] == null ? 90 : (fields[10] as num).toInt(),
       isCustom: fields[11] == null ? false : fields[11] as bool,
       isFavorite: fields[12] == null ? false : fields[12] as bool,
@@ -47,7 +57,7 @@ class ExerciseAdapter extends TypeAdapter<Exercise> {
   @override
   void write(BinaryWriter writer, Exercise obj) {
     writer
-      ..writeByte(16)
+      ..writeByte(22)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -79,7 +89,19 @@ class ExerciseAdapter extends TypeAdapter<Exercise> {
       ..writeByte(14)
       ..write(obj.createdAt)
       ..writeByte(15)
-      ..write(obj.updatedAt);
+      ..write(obj.updatedAt)
+      ..writeByte(16)
+      ..write(obj.libraryCategory)
+      ..writeByte(17)
+      ..write(obj.recommendedSets)
+      ..writeByte(18)
+      ..write(obj.recommendedRepsMin)
+      ..writeByte(19)
+      ..write(obj.recommendedRepsMax)
+      ..writeByte(20)
+      ..write(obj.recommendedDurationSeconds)
+      ..writeByte(21)
+      ..write(obj.recommendedDurationMaxSeconds);
   }
 
   @override
@@ -1426,6 +1448,68 @@ class BiologicalSexAdapter extends TypeAdapter<BiologicalSex> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is BiologicalSexAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class ExerciseLibraryCategoryAdapter
+    extends TypeAdapter<ExerciseLibraryCategory> {
+  @override
+  final typeId = 24;
+
+  @override
+  ExerciseLibraryCategory read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return ExerciseLibraryCategory.chest;
+      case 1:
+        return ExerciseLibraryCategory.back;
+      case 2:
+        return ExerciseLibraryCategory.shoulders;
+      case 3:
+        return ExerciseLibraryCategory.biceps;
+      case 4:
+        return ExerciseLibraryCategory.triceps;
+      case 5:
+        return ExerciseLibraryCategory.legs;
+      case 6:
+        return ExerciseLibraryCategory.cardio;
+      case 7:
+        return ExerciseLibraryCategory.abs;
+      default:
+        return ExerciseLibraryCategory.chest;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, ExerciseLibraryCategory obj) {
+    switch (obj) {
+      case ExerciseLibraryCategory.chest:
+        writer.writeByte(0);
+      case ExerciseLibraryCategory.back:
+        writer.writeByte(1);
+      case ExerciseLibraryCategory.shoulders:
+        writer.writeByte(2);
+      case ExerciseLibraryCategory.biceps:
+        writer.writeByte(3);
+      case ExerciseLibraryCategory.triceps:
+        writer.writeByte(4);
+      case ExerciseLibraryCategory.legs:
+        writer.writeByte(5);
+      case ExerciseLibraryCategory.cardio:
+        writer.writeByte(6);
+      case ExerciseLibraryCategory.abs:
+        writer.writeByte(7);
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ExerciseLibraryCategoryAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

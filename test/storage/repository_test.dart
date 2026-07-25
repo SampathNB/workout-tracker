@@ -56,12 +56,17 @@ void main() {
       String name = 'Bench Press',
       MuscleGroup muscle = MuscleGroup.chest,
       Equipment equipment = Equipment.barbell,
+      ExerciseLibraryCategory libraryCategory = ExerciseLibraryCategory.chest,
     }) => Exercise(
       id: IdGenerator.generate(),
       name: name,
       primaryMuscle: muscle,
+      libraryCategory: libraryCategory,
       equipment: equipment,
       secondaryMuscles: const [MuscleGroup.triceps],
+      recommendedSets: 3,
+      recommendedRepsMin: 8,
+      recommendedRepsMax: 12,
       createdAt: DateTime(2026, 7, 1),
     );
 
@@ -74,9 +79,14 @@ void main() {
       expect(loaded, isNotNull);
       expect(loaded!.name, 'Bench Press');
       expect(loaded.primaryMuscle, MuscleGroup.chest);
+      expect(loaded.libraryCategory, ExerciseLibraryCategory.chest);
       expect(loaded.secondaryMuscles, [MuscleGroup.triceps]);
       expect(loaded.equipment, Equipment.barbell);
       expect(loaded.tracking, ExerciseTracking.weightAndReps);
+      expect(loaded.recommendedSets, 3);
+      expect(loaded.recommendedRepsMin, 8);
+      expect(loaded.recommendedRepsMax, 12);
+      expect(loaded.prescriptionLabel, '3×8–12');
       expect(loaded.createdAt, DateTime(2026, 7, 1));
       expect(loaded.updatedAt, isNotNull);
     });

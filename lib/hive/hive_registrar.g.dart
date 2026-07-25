@@ -12,6 +12,7 @@ extension HiveRegistrar on HiveInterface {
     registerAdapter(EquipmentAdapter());
     registerAdapter(ExerciseAdapter());
     registerAdapter(ExerciseCategoryAdapter());
+    registerAdapter(ExerciseLibraryCategoryAdapter());
     registerAdapter(ExerciseSetAdapter());
     registerAdapter(ExerciseTrackingAdapter());
     registerAdapter(GoalAdapter());
@@ -41,6 +42,7 @@ extension IsolatedHiveRegistrar on IsolatedHiveInterface {
     registerAdapter(EquipmentAdapter());
     registerAdapter(ExerciseAdapter());
     registerAdapter(ExerciseCategoryAdapter());
+    registerAdapter(ExerciseLibraryCategoryAdapter());
     registerAdapter(ExerciseSetAdapter());
     registerAdapter(ExerciseTrackingAdapter());
     registerAdapter(GoalAdapter());

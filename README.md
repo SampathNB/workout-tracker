@@ -79,12 +79,32 @@ dart run build_runner build
 | Box | Entity |
 |---|---|
 | `settings` | `AppSettings` (single record) |
-| `exercises` | `Exercise` |
+| `exercises` | `Exercise` (86 bundled defaults + custom) |
 | `workout_sessions` | `WorkoutSession` → `SessionExercise` → `ExerciseSet` |
 | `workout_plans` | `WorkoutPlan` → `PlanExercise` |
 | `weight_entries` | `WeightEntry` |
 | `progress_photos` | `ProgressPhoto` (paths only; files live on disk) |
 | `goals` | `Goal` |
+
+### Default workout library
+
+`DefaultExerciseLibrary` ships 86 exercises across eight browse categories,
+seeded idempotently on bootstrap via `ExerciseLibrarySeeder`:
+
+| Category | Count | Example prescription |
+|---|---|---|
+| Chest | 10 | Bench Press `4×6–10` |
+| Back | 12 | Pull-Up `3×6–12` |
+| Shoulders | 10 | Overhead Press `4×6–10` |
+| Biceps | 10 | Barbell Curl `3×8–12` |
+| Triceps | 10 | Close-Grip Bench `3×6–10` |
+| Legs | 12 | Back Squat `4×6–10` |
+| Cardio | 10 | Treadmill Run `1×20–30min` |
+| Abs | 12 | Plank `3×30s–1min` |
+
+Each exercise carries `recommendedSets` / rep or duration ranges plus equipment,
+primary muscle and short cues. Query with
+`exerciseRepository.getByLibraryCategory(...)`.
 
 `HiveStorage.init()` registers adapters and opens every typed box during
 bootstrap. Pass `path:` to run against a temp directory in tests.

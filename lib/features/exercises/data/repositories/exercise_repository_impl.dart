@@ -55,6 +55,16 @@ class ExerciseRepositoryImpl extends HiveCrudRepository<Exercise>
   }, 'load');
 
   @override
+  Future<List<Exercise>> getByLibraryCategory(
+    ExerciseLibraryCategory category,
+  ) => guard(() {
+    final matches = _activeOf(
+      dataSource.readAll(),
+    ).where((exercise) => exercise.libraryCategory == category);
+    return _sorted(matches);
+  }, 'load');
+
+  @override
   Future<List<Exercise>> getFavorites() => guard(() {
     final matches = _activeOf(
       dataSource.readAll(),
@@ -67,6 +77,14 @@ class ExerciseRepositoryImpl extends HiveCrudRepository<Exercise>
     final matches = _activeOf(
       dataSource.readAll(),
     ).where((exercise) => exercise.isCustom);
+    return _sorted(matches);
+  }, 'load');
+
+  @override
+  Future<List<Exercise>> getDefaults() => guard(() {
+    final matches = _activeOf(
+      dataSource.readAll(),
+    ).where((exercise) => !exercise.isCustom);
     return _sorted(matches);
   }, 'load');
 

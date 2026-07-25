@@ -1,3 +1,18 @@
+/// Browse categories in the default workout library.
+///
+/// Distinct from [MuscleGroup]: a single category (e.g. Legs) can span several
+/// primary muscles (quads, hamstrings, glutes, calves).
+enum ExerciseLibraryCategory {
+  chest,
+  back,
+  shoulders,
+  biceps,
+  triceps,
+  legs,
+  cardio,
+  abs,
+}
+
 /// Muscle groups an exercise can target.
 enum MuscleGroup {
   chest,
@@ -60,6 +75,31 @@ enum ExerciseTracking {
 }
 
 /// Display helpers kept out of the entity so generated adapters stay stable.
+extension ExerciseLibraryCategoryX on ExerciseLibraryCategory {
+  String get label => switch (this) {
+    ExerciseLibraryCategory.chest => 'Chest',
+    ExerciseLibraryCategory.back => 'Back',
+    ExerciseLibraryCategory.shoulders => 'Shoulders',
+    ExerciseLibraryCategory.biceps => 'Biceps',
+    ExerciseLibraryCategory.triceps => 'Triceps',
+    ExerciseLibraryCategory.legs => 'Legs',
+    ExerciseLibraryCategory.cardio => 'Cardio',
+    ExerciseLibraryCategory.abs => 'Abs',
+  };
+
+  /// Short cue shown under the category name in the library UI.
+  String get subtitle => switch (this) {
+    ExerciseLibraryCategory.chest => 'Presses & flyes',
+    ExerciseLibraryCategory.back => 'Pulls & rows',
+    ExerciseLibraryCategory.shoulders => 'Presses & raises',
+    ExerciseLibraryCategory.biceps => 'Curls & flexors',
+    ExerciseLibraryCategory.triceps => 'Extensions & pushdowns',
+    ExerciseLibraryCategory.legs => 'Squats, hinges & calves',
+    ExerciseLibraryCategory.cardio => 'Conditioning & endurance',
+    ExerciseLibraryCategory.abs => 'Core strength & stability',
+  };
+}
+
 extension MuscleGroupX on MuscleGroup {
   String get label => switch (this) {
     MuscleGroup.chest => 'Chest',

@@ -16,10 +16,16 @@ abstract interface class ExerciseRepository implements CrudRepository<Exercise> 
 
   Future<List<Exercise>> getByCategory(ExerciseCategory category);
 
+  /// Non-archived exercises in a browse category of the default library.
+  Future<List<Exercise>> getByLibraryCategory(ExerciseLibraryCategory category);
+
   Future<List<Exercise>> getFavorites();
 
   /// User-created exercises.
   Future<List<Exercise>> getCustom();
+
+  /// Bundled (non-custom) exercises only.
+  Future<List<Exercise>> getDefaults();
 
   /// Flips the favorite flag and returns the updated exercise.
   Future<Exercise> toggleFavorite(String id);
